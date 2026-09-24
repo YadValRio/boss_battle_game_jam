@@ -1,0 +1,29 @@
+* EXCEPTION:
+* ERROR: :boss_attack method missing on ~Game~.
+
+#+begin_src ~Game#inspect~
+#<Game:0x7c234c1130 @state=#<GTK::OpenEntity:0x7c2444b750>, @inputs=#<GTK::Inputs:0x7c244514b0>, @args=#<GTK::Args:0x7c24451510>>
+#+end_src ~Game#inspect~
+
+** Did you mean?
+Here's a list of methods that kind of look like :boss_attack.
+*** :boss_attack_state
+*** :boss
+*** :boss_hit_box
+*** :boss_hurt_box
+*** :boss_shoot
+*** :boss_sprite
+
+The method named
+  :boss_attack
+with args
+  [{:entity_id=>3, :tick_count=>0, :__thrash_count__=>{}, :high_score=>0, :damage_render_queue=>[], :start_new_game=>false, :game_over=>false, :game_over_countdown=>nil, :player=>{:entity_id=>1, :entity_name=>:player, :entity_keys_by_ref=>{}, :is_dashing=>false, :dash_cooldown=>60, :in_dash_cooldown=>false, :stamina=>100, :stamina_cooldown=>90.0, :in_stamina_cooldown=>false, :tile_size=>64, :speed=>4, :slash_frames=>15, :hp=>3, :damaged_at=>-1000, :x=>50, :y=>400, :dir_x=>1, :dir_y=>-1, :is_moving=>false, :__thrash_count__=>{}, :slash_at=>nil}, :cooldown_temp=>60, :boss=>{:entity_id=>2, :entity_name=>:boss, :entity_keys_by_ref=>{}, :damage=>0, :x=>800.0, :y=>400.0, :w=>256, :h=>256, :target_x=>800, :target_y=>400, :attack_cooldown=>599}, :dist=>750.0}]
+doesn't exist on [Game, #<Class:#<Game:0x7c234c1130>>, AttrDR].
+
+(suggestions above)
+** Backtrace:
+*** app/main.rb:491:in boss_shoot
+*** app/main.rb:198:in calc_boss
+*** app/main.rb:153:in calc
+*** app/main.rb:8:in tick
+*** app/main.rb:533:in tick
