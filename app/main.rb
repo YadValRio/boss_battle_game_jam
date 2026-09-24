@@ -22,13 +22,18 @@ class Game
 
     # added variables
     state.player.is_dashing         = false
-    state.player.dash_cooldown      = 1 * FPS # in seconds
+    state.player.dash_cooldown      = 0.85 * FPS # in seconds
     state.player.in_dash_cooldown   = false
     state.player.stamina            = 100
     state.player.stamina_cooldown   = 1.5 * FPS # in seconds
     state.player.in_stamina_cooldown= false
 
     state.cooldown_temp = player.dash_cooldown
+
+    state.fireballs ||= []
+    state.fireball_size = 256
+    state.fireball_cooldown = 200
+    state.fireball_cooldown_start = -1
 
     state.player.tile_size          = 64
     state.player.speed              = 4
@@ -50,7 +55,7 @@ class Game
     state.boss.target_y             = 400
     state.boss.attack_cooldown      = 600
 
-    state.dist = Math.sqrt((boss.y - player.y) ** 2 + (boss.x - player.x) ** 2)
+    #state.dist = Math.sqrt((boss.y - player.y) ** 2 + (boss.x - player.x) ** 2)
     
   end
 
@@ -154,6 +159,7 @@ class Game
     calc_damage_render_queue
     calc_high_score
     calc_game_over
+    calc_fireball
   end
 
   def calc_player
@@ -217,6 +223,13 @@ class Game
     state.start_new_game = true    if state.game_over_countdown && state.game_over_countdown < 0
   end
 
+  def calc_fireball
+    state.fireballs.each do |fireball|
+      fireball.x += fireball.dx
+      fireball.y += fireball.dy
+    end
+  end
+
   def render
     render_boss
     render_player
@@ -226,7 +239,7 @@ class Game
     render_game_over
     # render_debug
     render_test_outputs
-
+    render_fireballs
   end
 
   def render_player
@@ -261,6 +274,10 @@ class Game
 
   def render_boss
     outputs.sprites << boss_sprite
+  end
+
+  def render_fireballs
+    outputs.sprites << state.fireballs
   end
 
   def render_damage_queue
@@ -488,13 +505,45 @@ class Game
   end
 
   def boss_shoot
+    puts "Reached boss_shot def"
     case boss_attack_state
     when :will_attack
-      if state.dist > 650
+      puts "Reached boss shoot when will_attack state"
+      #state.fireball_cooldown_start = Kernel.tick_count
+      #state.fireball_out_of_cooldown = 
+      #if Kernel.tick_count != 
+      can_fire = Kernel.tick_count >= state.fireball_cooldown_start + state.fireball_cooldown
+      puts "Got to the part where boss is about to shoot"
+      if state.dist > 580 && can_fire
         puts "Boss is far, will shoot"
+        state.fireball_cooldown_start = Kernel.tick_count
+        fire_fireball
       else puts "I guess the boss is close?"
       end
     end
+  end
+
+  def fire_fireball
+    puts "Firing fireball!"
+
+    # Calculate trajectory from boss center to player center
+    target_x = player.x + (player.tile_size / 2)
+    target_y = player.y + (player.tile_size / 2)
+    origin_x = boss.x + (boss.w / 2)
+    origin_y = boss.y + (boss.h / 2)
+
+    angle = Math.atan2(target_y - origin_y, target_x - origin_x)
+    speed = 24
+
+    state.fireballs << {
+      x: origin_x - (state.fireball_size / 2),
+      y: origin_y - (state.fireball_size / 2),
+      w: state.fireball_size,
+      h: state.fireball_size,
+      dx: Math.cos(angle) * speed,
+      dy: Math.sin(angle) * speed,
+      path: 'sprites/boss-battle/fireball.png'
+    }
   end
 
   def boss_attack_state
