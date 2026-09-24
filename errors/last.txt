@@ -1,18 +1,9 @@
 * EXCEPTION:
-* ERROR: :** method missing on ~Class~.
-
-#+begin_src ~Class#inspect~
-NIL
-#+end_src ~Class#inspect~
+* ERROR: Exception while requiring app/main.rb.
+** Failed to load app/main.rb.
+line 590:3: syntax error, unexpected keyword_end, expecting end of file
 
 
 
-The method named
-  :**
-with args
-  [2]
-doesn't exist on [NilClass].
-
-(suggestions above)
 ** Backtrace:
-*** app/main.rb:573:in tick
+** Backtrace:

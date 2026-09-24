@@ -224,10 +224,31 @@ class Game
   end
 
   def calc_fireball
+    hitbox_size = state.fireball_size * 0.75
+    offset = (state.fireball_size - hitbox_size) / 2
     state.fireballs.each do |fireball|
+      fireball_hitbox = {
+          x: fireball.x,
+          y: fireball.y,
+          w: hitbox_size,
+          h: hitbox_size
+        }
       fireball.x += fireball.dx
       fireball.y += fireball.dy
+      if fireball_hitbox.intersect_rect?(player_hurt_box) && player.damaged_at.elapsed?(120) && !player.is_dashing
+        player.damaged_at = Kernel.tick_count
+        player.hp -= 1
+        player.hp  = 0 if player.hp < 0
+      end
     end
+
+    state.fireballs.reject! do |fireball|
+      fireball.x < -state.fireball_size ||
+      fireball.x > 1280 ||
+      fireball.y < -state.fireball_size ||
+      fireball.y > 720
+    end
+    
   end
 
   def render
@@ -237,7 +258,7 @@ class Game
     render_scores
     render_instructions
     render_game_over
-    # render_debug
+    #render_debug
     render_test_outputs
     render_fireballs
   end
@@ -509,9 +530,6 @@ class Game
     case boss_attack_state
     when :will_attack
       puts "Reached boss shoot when will_attack state"
-      #state.fireball_cooldown_start = Kernel.tick_count
-      #state.fireball_out_of_cooldown = 
-      #if Kernel.tick_count != 
       can_fire = Kernel.tick_count >= state.fireball_cooldown_start + state.fireball_cooldown
       puts "Got to the part where boss is about to shoot"
       if state.dist > 580 && can_fire
@@ -545,6 +563,7 @@ class Game
       path: 'sprites/boss-battle/fireball.png'
     }
   end
+
 
   def boss_attack_state
     if boss.target_x.round != boss.x.round || boss.target_y.round != boss.y.round
