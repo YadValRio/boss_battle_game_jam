@@ -572,7 +572,7 @@ end
           y: args.grid.h - margin - state.heart_size,
           w: state.heart_size,
           h: state.heart_size,
-          path: 'sprites/boss-battle/heart.png'
+          path: 'sprites/boss-battle/heart_32x32.png'
         }
       end
     end
