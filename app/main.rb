@@ -1,6 +1,235 @@
 class Game
   FPS = 60
   attr_dr
+def draw_walls args
+  size = 100
+  wall_size = 20
+  x = 50
+  y = 0
+
+  while x < args.grid.w - 40
+    args.outputs.sprites << {
+      x: x,
+      y: -4.5,
+      w: wall_size,
+      h: wall_size,
+      path: 'sprites/tile/steampunk/steampunk_rust_side_2.png',
+      flip_vertically: true,
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 700,
+      w: wall_size,
+      h: wall_size,
+      path: 'sprites/tile/steampunk/steampunk_rust_side_2.png',
+    }
+    x += wall_size
+  end
+while y < args.grid.h - 80
+  args.outputs.sprites << {
+    x: 0,
+    y: y + 40,
+    w: wall_size, 
+    h: wall_size,
+    path: 'sprites/tile/steampunk/steampunk_rust_side_2_vertical.png',
+    flip_horizontally: true
+  }
+  args.outputs.sprites << {
+    x: 1260,
+    y: y + 40,
+    w: wall_size, 
+    h: wall_size,
+    path: 'sprites/tile/steampunk/steampunk_rust_side_2_vertical.png',
+  }
+  y += 10
+end
+  args.outputs.sprites << {
+    x: 0,
+    y: 620,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png' 
+  }
+  args.outputs.sprites << {
+    x: 1180,
+    y: 620,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png',
+    flip_horizontally: true
+  }
+  args.outputs.sprites << {
+    x: 0,
+    y: 0,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png' ,
+    flip_vertically: true
+  }
+  args.outputs.sprites << {
+    x: 1180,
+    y: 0,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png',
+    flip_horizontally: true,
+    flip_vertically: true
+  }
+end
+
+ 
+def draw_ground args
+  size = 64 #size of the ground tiles
+  x = 0 #where the first tile begins
+
+  while x < args.grid.w   
+    args.outputs.sprites << {
+      x: x,
+      y: 700,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 640,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 580,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 520,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 460,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 400,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 340,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 280,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 220,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 160,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+
+    args.outputs.sprites << {
+      x: x,
+      y: 100,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+     
+    }
+
+    args.outputs.sprites << {
+      x: x,
+      y: 40,
+      w: size,
+      h: size,   
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+
+    args.outputs.sprites << {
+      x: x,
+      y: -20,
+      w: size,
+      h: size,
+      path: 'sprites/tile/steampunk/steampunk_panel_iron_bolt_vertborder.png'
+    }
+
+    x += size
+  end
+  
+end
+def draw_objects args
+  object_size = 64
+  x = 0
+
+  # Torch animation settings
+  frame_count = 4
+  frame_speed = 6
+
+  # Calculate the current animation frame
+  frame = 0.frame_index(
+    count: frame_count,
+    hold_for: frame_speed,
+    repeat: true
+  )
+
+  while x < args.grid.w
+    args.outputs.sprites << {
+      x: x + 100,
+      y: 30,
+      w: object_size,
+      h: object_size,
+
+      path: 'sprites/objects/lights/torch-animated.png',
+
+      tile_x: frame * object_size,
+      tile_y: 0,
+      tile_w: object_size,
+      tile_h: object_size
+  }
+    args.outputs.sprites << {
+      x: x + 100,
+      y: 625,
+      w: object_size,
+      h: object_size,
+
+      path: 'sprites/objects/lights/torch-animated.png',
+
+      tile_x: frame * object_size,
+      tile_y: 0,
+      tile_w: object_size,
+      tile_h: object_size
+  }
+  x += 150
+end
+end
+
+
 
   def tick
     defaults
@@ -8,6 +237,8 @@ class Game
     calc
     render
   end
+  
+
 
   def defaults
     state.high_score          ||= 0
@@ -249,6 +480,9 @@ class Game
   end
 
   def render
+    draw_ground args
+    draw_walls args
+    draw_objects args
     render_boss
     render_player
     render_damage_queue
@@ -263,7 +497,7 @@ class Game
   def render_player
     outputs.labels << { x: player.x + 5,
                         y: player.y + 5,
-                        text: "hp: #{player.hp}" }
+                        text: "hp: #{player.hp}", r:255, g:255, b:255 }
 
     if state.game_over
       outputs.labels << { x: player.x + player.tile_size / 2,
@@ -303,15 +537,15 @@ class Game
   end
 
   def render_scores
-    outputs.labels << { x: 30, y: 30.from_top, text: "curr score: #{boss.damage}" }
-    outputs.labels << { x: 30, y: 50.from_top, text: "high score: #{state.high_score}" }
-    outputs.labels << { x: 30, y: 70.from_top, text: "stamina: #{player.stamina.to_i}" }
+    outputs.labels << { x: 30, y: 30.from_top, text: "curr score: #{boss.damage}", r:255, g: 255, b:255}
+    outputs.labels << { x: 30, y: 50.from_top, text: "high score: #{state.high_score}", r:255, g: 255, b:255}
+    outputs.labels << { x: 30, y: 70.from_top, text: "stamina: #{player.stamina.to_i}", r:255, g: 255, b:255}
   end
 
   def render_instructions
-    outputs.labels << { x: 30, y: 70, text: "Controls:" }
-    outputs.labels << { x: 30, y: 50, text: "Keyboard:   WASD/Arrow keys to move. J to attack. K to dash." }
-    outputs.labels << { x: 30, y: 30, text: "Controller: D-Pad to move. A/B button to attack. X/Y button to dash." }
+    outputs.labels << { x: 30, y: 70, text: "Controls:", r:255, g:255, b:255}
+    outputs.labels << { x: 30, y: 50, text: "Keyboard:   WASD/Arrow keys to move. J to attack. K to dash." , r:255, g:255, b:255}
+    outputs.labels << { x: 30, y: 30, text: "Controller: D-Pad to move. A/B button to attack. X/Y button to dash." , r:255, g:255, b:255}
   end
 
   def render_game_over
@@ -586,12 +820,9 @@ class Game
 end
 
 def render_test_outputs
-  is_debugging = false
-  if is_debugging
-    outputs.labels << { x: 30, y: 90.from_top, text: "In dash cooldown: #{player.in_dash_cooldown}" }
-    outputs.labels << { x: 30, y: 110.from_top, text: "Cooldown temp: #{state.cooldown_temp}" }
-    outputs.labels << { x: 30, y: 130.from_top, text: "Distance between them: #{state.dist}" }
-  end
+  #outputs.labels << { x: 30, y: 90.from_top, text: "In dash cooldown: #{player.in_dash_cooldown}" }
+  #outputs.labels << { x: 30, y: 110.from_top, text: "Cooldown temp: #{state.cooldown_temp}" }
+  #outputs.labels << { x: 30, y: 130.from_top, text: "Distance between them: #{state.dist}",r:255, g: 255, b:255 }
 end
 
 $game = Game.new
@@ -601,3 +832,4 @@ def tick args
   $game.tick
   state.dist = Math.sqrt((state.boss.y - state.player.y) ** 2 + (state.boss.x - state.player.x) ** 2)
 end
+DR.reset
