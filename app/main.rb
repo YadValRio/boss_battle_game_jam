@@ -426,7 +426,7 @@ end
     boss.x += dx * 0.25 ** 2
     boss.y += dy * 0.25 ** 2
 
-    if boss.intersect_rect?(player_hurt_box) && player.damaged_at.elapsed?(120) && !player.is_dashing
+    if boss_hit_box.intersect_rect?(player_hurt_box) && player.damaged_at.elapsed?(120) && !player.is_dashing
       player.damaged_at = Kernel.tick_count
       player.hp -= 1
       player.hp  = 0 if player.hp < 0
@@ -711,23 +711,27 @@ end
     state.boss
   end
 
-  def boss_hurt_box
-    {
-      x: boss.x,
-      y: boss.y,
-      w: boss.w,
-      h: boss.h
-    }
-  end
-
   def boss_hit_box
-    {
-      x: boss.x,
-      y: boss.y,
-      w: boss.w,
-      h: boss.h
-    }
-  end
+      hitbox_w = boss.w
+      hitbox_h = boss.h
+      {
+        x: boss.x + (boss.w - hitbox_w) / 2 + 190,
+        y: boss.y + (boss.h - hitbox_h) / 2 - 10,
+        w: hitbox_w - 80,
+        h: hitbox_h - 40
+      }
+    end
+
+    def boss_hurt_box
+      hurtbox_w = boss.w
+      hurtbox_h = boss.h
+      {
+        x: boss.x + (boss.w - hurtbox_w) / 2 + 190,
+        y: boss.y + (boss.h - hurtbox_h) / 2 - 10,
+        w: hurtbox_w - 80,
+        h: hurtbox_h - 40
+      }
+    end
 def boss_sprite_idle
 
   frame_count = 6
@@ -745,7 +749,7 @@ def boss_sprite_idle
     w: boss.w + 300,
     h: boss.h + 100,
     path: "sprites/enemies/bosses/boss_demon/individual-sprites/01_demon_idle/demon_idle_#{frame + 1}.png",
-    flip_horizontally: player.x > boss.x
+    flip_horizontally: player.x - 170 > boss.x
   }
 
 end
