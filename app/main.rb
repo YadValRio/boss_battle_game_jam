@@ -526,6 +526,10 @@ end
 
   def render_boss
     outputs.sprites << boss_sprite
+
+    if boss_attack_state == :annoyed
+      outputs.sprites << boss_powerup
+    end
   end
 
   def render_fireballs
@@ -708,27 +712,79 @@ end
       h: boss.h
     }
   end
+def boss_sprite_idle
+
+  frame_count = 6
+  frame_speed = 8
+
+  frame = 0.frame_index(
+    count: frame_count,
+    hold_for: frame_speed,
+    repeat: true
+  )
+
+  {
+    x: boss.x,
+    y: boss.y,
+    w: boss.w + 300,
+    h: boss.h + 100,
+    path: "sprites/enemies/bosses/boss_demon/individual-sprites/01_demon_idle/demon_idle_#{frame + 1}.png",
+    flip_horizontally: player.x > boss.x
+  }
+
+end
+
+def boss_sprite_attack
+
+  frame_count = 12
+  frame_speed = 8
+
+  frame = 0.frame_index(
+    count: frame_count,
+    hold_for: frame_speed,
+    repeat: true
+  )
+
+  {
+    x: boss.x,
+    y: boss.y,
+    w: boss.w + 300,
+    h: boss.h + 100,
+    path: "sprites/enemies/bosses/boss_demon/individual-sprites/03_demon_cleave/demon_cleave_#{frame + 1}.png",
+    flip_horizontally: player.x > boss.x
+  }
+end
+  def boss_powerup
+    frame_count = 12
+    frame_speed = 8
+
+  frame = 0.frame_index(
+    count: frame_count,
+    hold_for: frame_speed,
+    repeat: true
+  )
+
+  {
+    x: boss.x,
+    y: boss.y,
+    w: 400,
+    h: 400,
+    path: "sprites/special_effects/fire-aura/frames/FireMage_skill3_frame#{frame + 1}.png",
+    flip_horizontally: player.x > boss.x
+  }
+end
+
+
 
   def boss_sprite
     case boss_attack_state
     when :sleeping
-      { x: boss.x,
-        y: boss.y,
-        w: boss.w,
-        h: boss.h,
-        path: 'sprites/boss-battle/boss-sleeping.png' }
+      boss_sprite_idle
     when :aware
-      { x: boss.x,
-        y: boss.y,
-        w: boss.w,
-        h: boss.h,
-        path: 'sprites/boss-battle/boss-aware.png' }
+      boss_sprite_idle 
     when :annoyed
-      { x: boss.x,
-        y: boss.y,
-        w: boss.w,
-        h: boss.h,
-        path: 'sprites/boss-battle/boss-annoyed.png' }
+      boss_powerup
+      boss_sprite_idle
     when :will_attack
       shake_x  =  2 * rand
       shake_x *= -1 if rand < 0.5
@@ -736,21 +792,12 @@ end
       shake_y  =  2 * rand
       shake_y *= -1 if rand < 0.5
 
-      { x: boss.x + shake_x,
-        y: boss.y + shake_x,
-        w: boss.w,
-        h: boss.h,
-        path: 'sprites/boss-battle/boss-will-attack.png' }
+      
+      boss_sprite_attack
     when :attacking
       flip_horizontally = false
       flip_horizontally = true if boss.target_x > boss.x
-
-      { x: boss.x,
-        y: boss.y,
-        w: boss.w,
-        h: boss.h,
-        flip_horizontally: flip_horizontally,
-        path: 'sprites/boss-battle/boss-attacking.png' }
+      boss_sprite_attack
     else
       { x: boss.x, y: boss.y, w: boss.w, h: boss.h, r: 255, g: 0, b: 0 }
     end
