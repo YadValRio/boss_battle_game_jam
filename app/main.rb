@@ -1,7 +1,81 @@
 class Game
   FPS = 60
   attr_dr
+def draw_walls args
+  size = 100
+  wall_size = 20
+  x = 50
+  y = 0
 
+  while x < args.grid.w - 40
+    args.outputs.sprites << {
+      x: x,
+      y: -4.5,
+      w: wall_size,
+      h: wall_size,
+      path: 'sprites/tile/steampunk/steampunk_rust_side_2.png',
+      flip_vertically: true,
+    }
+    args.outputs.sprites << {
+      x: x,
+      y: 700,
+      w: wall_size,
+      h: wall_size,
+      path: 'sprites/tile/steampunk/steampunk_rust_side_2.png',
+    }
+    x += wall_size
+  end
+while y < args.grid.h - 80
+  args.outputs.sprites << {
+    x: 0,
+    y: y + 40,
+    w: wall_size, 
+    h: wall_size,
+    path: 'sprites/tile/steampunk/steampunk_rust_side_2_vertical.png',
+    flip_horizontally: true
+  }
+  args.outputs.sprites << {
+    x: 1260,
+    y: y + 40,
+    w: wall_size, 
+    h: wall_size,
+    path: 'sprites/tile/steampunk/steampunk_rust_side_2_vertical.png',
+  }
+  y += 10
+end
+  args.outputs.sprites << {
+    x: 0,
+    y: 620,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png' 
+  }
+  args.outputs.sprites << {
+    x: 1180,
+    y: 620,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png',
+    flip_horizontally: true
+  }
+  args.outputs.sprites << {
+    x: 0,
+    y: 0,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png' ,
+    flip_vertically: true
+  }
+  args.outputs.sprites << {
+    x: 1180,
+    y: 0,
+    w: size,
+    h: size,
+    path: 'sprites/tile/steampunk/steampunk_corner_rust.png',
+    flip_horizontally: true,
+    flip_vertically: true
+  }
+end
 
  
 def draw_ground args
@@ -108,6 +182,51 @@ def draw_ground args
     x += size
   end
   
+end
+def draw_objects args
+  object_size = 64
+  x = 0
+
+  # Torch animation settings
+  frame_count = 4
+  frame_speed = 6
+
+  # Calculate the current animation frame
+  frame = 0.frame_index(
+    count: frame_count,
+    hold_for: frame_speed,
+    repeat: true
+  )
+
+  while x < args.grid.w
+    args.outputs.sprites << {
+      x: x + 100,
+      y: 30,
+      w: object_size,
+      h: object_size,
+
+      path: 'sprites/objects/lights/torch-animated.png',
+
+      tile_x: frame * object_size,
+      tile_y: 0,
+      tile_w: object_size,
+      tile_h: object_size
+  }
+    args.outputs.sprites << {
+      x: x + 100,
+      y: 625,
+      w: object_size,
+      h: object_size,
+
+      path: 'sprites/objects/lights/torch-animated.png',
+
+      tile_x: frame * object_size,
+      tile_y: 0,
+      tile_w: object_size,
+      tile_h: object_size
+  }
+  x += 150
+end
 end
 
 
@@ -331,6 +450,8 @@ end
 
   def render
     draw_ground args
+    draw_walls args
+    draw_objects args
     render_boss
     render_player
     render_damage_queue
