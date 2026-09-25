@@ -266,6 +266,9 @@ end
     state.fireball_cooldown = 200
     state.fireball_cooldown_start = -1
 
+    state.hearts ||= []
+    state.heart_size = 64
+
     state.player.tile_size          = 64
     state.player.speed              = 4
     state.player.slash_frames       = 15
@@ -492,12 +495,11 @@ end
     #render_debug
     render_test_outputs
     render_fireballs
+    render_hearts
   end
 
   def render_player
-    outputs.labels << { x: player.x + 5,
-                        y: player.y + 5,
-                        text: "hp: #{player.hp}", r:255, g:255, b:255 }
+    #outputs.labels << { x: player.x + 5, y: player.y + 5, text: "hp: #player.hp}", r:255, g:255, b:255 }
 
     if state.game_over
       outputs.labels << { x: player.x + player.tile_size / 2,
@@ -560,6 +562,20 @@ end
     outputs.borders << boss_hurt_box
     outputs.borders << boss_hit_box
   end
+
+  def render_hearts
+      margin = 20
+
+      player.hp.times do |i|
+        outputs.sprites << {
+          x: args.grid.w - margin - ((player.hp - i) * (state.heart_size + 8)),
+          y: args.grid.h - margin - state.heart_size,
+          w: state.heart_size,
+          h: state.heart_size,
+          path: 'sprites/boss-battle/heart.png'
+        }
+      end
+    end
 
   def player
     state.player
@@ -783,6 +799,7 @@ end
 
     angle = Math.atan2(target_y - origin_y, target_x - origin_x)
     speed = 24
+    sprite_angle = angle.to_degrees
 
     state.fireballs << {
       x: origin_x - (state.fireball_size / 2),
@@ -791,6 +808,7 @@ end
       h: state.fireball_size,
       dx: Math.cos(angle) * speed,
       dy: Math.sin(angle) * speed,
+      angle: sprite_angle,
       path: 'sprites/boss-battle/fireball.png'
     }
   end
@@ -820,9 +838,12 @@ end
 end
 
 def render_test_outputs
-  #outputs.labels << { x: 30, y: 90.from_top, text: "In dash cooldown: #{player.in_dash_cooldown}" }
-  #outputs.labels << { x: 30, y: 110.from_top, text: "Cooldown temp: #{state.cooldown_temp}" }
-  #outputs.labels << { x: 30, y: 130.from_top, text: "Distance between them: #{state.dist}",r:255, g: 255, b:255 }
+  is_debugging = false
+  if is_debugging
+    outputs.labels << { x: 30, y: 90.from_top, text: "In dash cooldown: #{player.in_dash_cooldown}" }
+    outputs.labels << { x: 30, y: 110.from_top, text: "Cooldown temp: #{state.cooldown_temp}" }
+    outputs.labels << { x: 30, y: 130.from_top, text: "Distance between them: #{state.dist}",r:255, g: 255, b:255 }
+  end
 end
 
 $game = Game.new

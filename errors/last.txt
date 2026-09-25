@@ -1,7 +1,9 @@
 * EXCEPTION:
 * ERROR: Exception while requiring app/main.rb.
 ** Failed to load app/main.rb.
-line 590:3: syntax error, unexpected keyword_end, expecting end of file
+line 503:2: syntax error, unexpected ':', expecting keyword_end
+line 503:16: syntax error, unexpected ',', expecting keyword_end
+line 504:49: syntax error, unexpected ',', expecting keyword_end
 
 
 
