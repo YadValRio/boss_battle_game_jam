@@ -54,9 +54,6 @@ class Game
     state.boss.target_x             = 800
     state.boss.target_y             = 400
     state.boss.attack_cooldown      = 600
-
-    #state.dist = Math.sqrt((boss.y - player.y) ** 2 + (boss.x - player.x) ** 2)
-    
   end
 
   def input
@@ -589,9 +586,12 @@ class Game
 end
 
 def render_test_outputs
-  #outputs.labels << { x: 30, y: 90.from_top, text: "In dash cooldown: #{player.in_dash_cooldown}" }
-  #outputs.labels << { x: 30, y: 110.from_top, text: "Cooldown temp: #{state.cooldown_temp}" }
-  outputs.labels << { x: 30, y: 130.from_top, text: "Distance between them: #{state.dist}" }
+  is_debugging = false
+  if is_debugging
+    outputs.labels << { x: 30, y: 90.from_top, text: "In dash cooldown: #{player.in_dash_cooldown}" }
+    outputs.labels << { x: 30, y: 110.from_top, text: "Cooldown temp: #{state.cooldown_temp}" }
+    outputs.labels << { x: 30, y: 130.from_top, text: "Distance between them: #{state.dist}" }
+  end
 end
 
 $game = Game.new
