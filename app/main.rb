@@ -426,7 +426,7 @@ end
     boss.x += dx * 0.25 ** 2
     boss.y += dy * 0.25 ** 2
 
-    if boss_hit_box.intersect_rect?(player_hurt_box) && player.damaged_at.elapsed?(120) && !player.is_dashing
+    if boss_hit_box.intersect_rect?(player_hurt_box) && player.damaged_at.elapsed?(120) && !player.is_dashing && boss_attack_state == :attacking
       player.damaged_at = Kernel.tick_count
       player.hp -= 1
       player.hp  = 0 if player.hp < 0
@@ -492,7 +492,7 @@ end
     render_scores
     render_instructions
     render_game_over
-    #render_debug
+    render_debug
     render_test_outputs
     render_fireballs
     render_hearts
@@ -715,9 +715,9 @@ end
       hitbox_w = boss.w
       hitbox_h = boss.h
       {
-        x: boss.x + (boss.w - hitbox_w) / 2 + 190,
-        y: boss.y + (boss.h - hitbox_h) / 2 - 10,
-        w: hitbox_w - 80,
+        x: boss.x + (boss.w - hitbox_w) / 2 + 70,
+        y: boss.y + (boss.h - hitbox_h) / 2  - 10,
+        w: 1.5 * (hitbox_w + 25),
         h: hitbox_h - 40
       }
     end
